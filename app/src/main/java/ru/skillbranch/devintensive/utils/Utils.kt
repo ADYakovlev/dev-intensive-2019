@@ -9,15 +9,15 @@ object Utils {
         return firstName to lastName
     }
 
-    fun transliteration(payload: String, sep: String): String {
+    fun transliteration(payload: String, divider: String = " "): String {
         val result = StringBuilder()
         for (i in 0..payload.length - 1) {
-            result.append(Utils.translitChar(payload.get(i).toString(), sep))
+            result.append(Utils.translitChar(payload.get(i).toString(), divider))
         }
         return result.toString()
     }
 
-    fun translitChar(c: String, sep: String): String {
+    fun translitChar(c: String, divider: String): String {
         return when (c) {
             "А" -> "A"
             "Б" -> "B"
@@ -85,7 +85,7 @@ object Utils {
             "э" -> "e"
             "ю" -> "u"
             "я" -> "ya"
-            " " -> sep
+            " " -> divider
             else -> c
         }
     }
