@@ -12,12 +12,12 @@ object Utils {
     fun transliteration(payload: String, sep: String): String {
         val result = StringBuilder()
         for (i in 0..payload.length - 1) {
-            result.append(Utils.translitChar(payload.get(i).toString()))
+            result.append(Utils.translitChar(payload.get(i).toString(), sep))
         }
         return result.toString()
     }
 
-    fun translitChar(c: String): String {
+    fun translitChar(c: String, sep: String): String {
         return when (c) {
             "А" -> "A"
             "Б" -> "B"
@@ -85,6 +85,7 @@ object Utils {
             "э" -> "e"
             "ю" -> "u"
             "я" -> "ya"
+            " " -> sep
             else -> c
         }
     }
