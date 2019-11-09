@@ -9,7 +9,7 @@ object Utils {
         return firstName to lastName
     }
 
-    fun transliteration(payload: String): String {
+    fun transliteration(payload: String, sep: String): String {
         val result = StringBuilder()
         for (i in 0..payload.length - 1) {
             result.append(Utils.translitChar(payload.get(i).toString()))
