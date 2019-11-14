@@ -27,7 +27,11 @@ fun Date.add(value: Int, units: TimeUnits = TimeUnits.SECOND): Date {
 }
 
 fun Date.hummanizeDiff(date: Date = Date()): String {
-    TODO("not implemented")//
+    val deltaTime: Long = Date().time - date.time
+    return when (deltaTime) {
+        10L -> "стал"
+        else -> "был"
+    }
 }
 
 enum class TimeUnits {
