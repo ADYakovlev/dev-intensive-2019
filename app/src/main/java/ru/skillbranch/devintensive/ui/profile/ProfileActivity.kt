@@ -9,8 +9,12 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_profile.*
 import ru.skillbranch.devintensive.R
+import ru.skillbranch.devintensive.models.Profile
+import ru.skillbranch.devintensive.viewmodels.ProfileViewModel
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -18,17 +22,19 @@ class ProfileActivity : AppCompatActivity() {
         const val IS_EDIT_MODE = "IS_EDIT_MODE"
     }
 
+    private lateinit var viewModel: ProfileViewModel
+
     var isEditMode = false
     lateinit var viewFields: Map<String, TextView>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile_constraint)
+        setContentView(R.layout.activity_profile)
         initViews(savedInstanceState)
     }
 
     private fun initViews(savedInstanceState: Bundle?) {
         viewFields = mapOf(
-            "nickname" to tv_nick_name,
+            "nickName" to tv_nick_name,
             "rank" to tv_rank,
             "firstname" to et_first_name,
             "lastname" to et_last_name,
@@ -37,6 +43,7 @@ class ProfileActivity : AppCompatActivity() {
             "rating" to tv_rating,
             "respect" to tv_respect
         )
+
         isEditMode = savedInstanceState?.getBoolean(IS_EDIT_MODE, false) ?: false
         btn_edit.setOnClickListener {
             it.id
@@ -71,12 +78,32 @@ class ProfileActivity : AppCompatActivity() {
             resources.getDrawable(R.drawable.ic_edit_black_24dp)
         }
 
-//        background.colorFilter = filter
-//        setImageDrowable(icon)
     }
 
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
         super.onSaveInstanceState(outState, outPersistentState)
         outState?.putBoolean(IS_EDIT_MODE, isEditMode)
+    }
+
+    private final fun initViewModel() {
+        viewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
+        viewModel.getProfileDate().observe(this, Observer { updateUI(it) })
+    }
+
+    private fun updateUI(profile: Profile) {
+        profile.toMap().also {
+            for ((k, v) in viewFields) {
+                v.text = it[k].toString()
+            }
+        }
+    }
+
+    private fun saveProfileInfo() {
+        Profile(
+            firstName = et_first_name.text.toString(),
+            lastName = et_last_name.text.toString(),
+            about = et_about.text.toString(),
+            repository = et_repo.text.toString()
+        ).apply { viewModel.saveProfileData }
     }
 }

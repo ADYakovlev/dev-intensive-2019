@@ -33,10 +33,7 @@ data class User(
     }
 
     fun getIntro() = """
-
-        tu tu tu !!!
         $firstName $lastName
-
     """.trimIndent()
 
     fun printMe() = println(
