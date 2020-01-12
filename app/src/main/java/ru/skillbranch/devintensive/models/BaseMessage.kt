@@ -1,5 +1,7 @@
 package ru.skillbranch.devintensive.models
 
+import ru.skillbranch.devintensive.models.data.Chat
+import ru.skillbranch.devintensive.models.data.User
 import java.util.*
 
 abstract class BaseMessage(
@@ -7,19 +9,21 @@ abstract class BaseMessage(
     val from: User?,
     val chat: Chat,
     val isIncoming: Boolean = false,
-    val date: Date = Date()
-
+    val date: Date = Date(),
+    val isRead: Boolean
 ) {
+
     abstract fun formatMessage(): String
 
     companion object AbstractFactory {
-        var lastId = -1;
+        var lastId = -1
         fun makeMessage(
             from: User?,
             chat: Chat,
             date: Date = Date(),
             type: String = "text",
-            payload: Any?
+            payload: Any?,
+            isIncoming: Boolean = false
         ): BaseMessage {
             lastId++
             return when (type) {

@@ -1,101 +1,136 @@
 package ru.skillbranch.devintensive.utils
 
+import android.content.Context
+import kotlin.math.roundToInt
+
 object Utils {
-    //TODO FIX ME!!!
     fun parseFullName(fullName: String?): Pair<String?, String?> {
-        val parts: List<String>? = fullName?.split(" ")
+        val fullName1 = fullName?.trim()
+        if (fullName1.isNullOrEmpty())
+            return Pair(null, null)
+
+        val parts: List<String>? = fullName1?.split(" ")
+
         val firstName = parts?.getOrNull(0)
         val lastName = parts?.getOrNull(1)
-        return firstName to lastName
+        return Pair(firstName, lastName)
     }
 
     fun transliteration(payload: String, divider: String = " "): String {
-        val result = StringBuilder()
-        for (i in 0..payload.length - 1) {
-            result.append(Utils.translitChar(payload.get(i).toString(), divider))
+
+        var nickName: String = ""
+        for (liter in payload) {
+
+            nickName += when (liter) {
+                'А' -> "A"
+                'Б' -> "B"
+                'В' -> "V"
+                'Г' -> "G"
+                'Д' -> "D"
+                'Е' -> "E"
+                'Ё' -> "E"
+                'Ж' -> "Zh"
+                'З' -> "Z"
+                'И' -> "I"
+                'Й' -> "I"
+                'К' -> "K"
+                'Л' -> "L"
+                'М' -> "M"
+                'Н' -> "N"
+                'О' -> "O"
+                'П' -> "P"
+                'Р' -> "R"
+                'С' -> "S"
+                'Т' -> "T"
+                'У' -> "U"
+                'Ф' -> "F"
+                'Х' -> "H"
+                'Ц' -> "C"
+                'Ч' -> "C"
+                'Ш' -> "Sh"
+                'Щ' -> "Sh"
+                'Ъ' -> ""
+                'Ы' -> "I"
+                'Ь' -> ""
+                'Э' -> "E"
+                'Ю' -> "Yu"
+                'Я' -> "Ya"
+                'а' -> "a"
+                'б' -> "b"
+                'в' -> "v"
+                'г' -> "g"
+                'д' -> "d"
+                'е' -> "e"
+                'ё' -> "e"
+                'ж' -> "zh"
+                'з' -> "z"
+                'и' -> "i"
+                'й' -> "i"
+                'к' -> "k"
+                'л' -> "l"
+                'м' -> "m"
+                'н' -> "n"
+                'о' -> "o"
+                'п' -> "p"
+                'р' -> "r"
+                'с' -> "s"
+                'т' -> "t"
+                'у' -> "u"
+                'ф' -> "f"
+                'х' -> "h"
+                'ц' -> "c"
+                'ч' -> "ch"
+                'ш' -> "sh"
+                'щ' -> "sh"
+                'ъ' -> ""
+                'ы' -> "i"
+                'ь' -> ""
+                'э' -> "e"
+                'ю' -> "yu"
+                'я' -> "ya"
+                ' ' -> divider[0]
+
+                else -> liter
+            }
         }
-        return result.toString()
+
+        return nickName
+
     }
 
-    fun translitChar(c: String, divider: String): String {
-        return when (c) {
-            "А" -> "A"
-            "Б" -> "B"
-            "В" -> "V"
-            "Г" -> "G"
-            "Д" -> "D"
-            "Е" -> "E"
-            "Ё" -> "Je"
-            "Ж" -> "Zh"
-            "З" -> "Z"
-            "И" -> "I"
-            "Й" -> "Y"
-            "К" -> "K"
-            "Л" -> "L"
-            "М" -> "M"
-            "Н" -> "N"
-            "О" -> "O"
-            "П" -> "P"
-            "Р" -> "R"
-            "С" -> "S"
-            "Т" -> "T"
-            "У" -> "U"
-            "Ф" -> "F"
-            "Х" -> "Kh"
-            "Ц" -> "C"
-            "Ч" -> "Ch"
-            "Ш" -> "Sh"
-            "Щ" -> "Sh"
-            "Ъ" -> ""
-            "Ы" -> "Ih"
-            "Ь" -> ""
-            "Э" -> "Eh"
-            "Ю" -> "U"
-            "Я" -> "Ya"
-            "а" -> "a"
-            "б" -> "b"
-            "в" -> "v"
-            "г" -> "g"
-            "д" -> "d"
-            "е" -> "e"
-            "ё" -> "je"
-            "ж" -> "zh"
-            "з" -> "z"
-            "и" -> "i"
-            "й" -> "y"
-            "к" -> "k"
-            "л" -> "l"
-            "м" -> "m"
-            "н" -> "n"
-            "о" -> "o"
-            "п" -> "p"
-            "р" -> "r"
-            "с" -> "s"
-            "т" -> "n"
-            "у" -> "u"
-            "ф" -> "f"
-            "х" -> "kh"
-            "ц" -> "c"
-            "ч" -> "ch"
-            "ш" -> "sh"
-            "щ" -> "jsh"
-            "ъ" -> ""
-            "ы" -> "i"
-            "ь" -> ""
-            "э" -> "e"
-            "ю" -> "u"
-            "я" -> "ya"
-            " " -> divider
-            else -> c
+    fun toInitials(firstName: String?, lastName: String?): String? {
+
+        var firstName1 = firstName?.trim()
+        var lastName1 = lastName?.trim()
+
+        var result = ""
+
+        if (!firstName1.isNullOrEmpty())
+            result += firstName1?.substring(0, 1)?.toUpperCase()
+
+        if (!lastName1.isNullOrEmpty()) {
+            result += lastName1?.substring(0, 1)?.toUpperCase()
         }
+
+        if (result.length > 0)
+            return result;
+        else
+            return null
     }
 
-    fun toInitials(firstName: String?, middleName: String?): String? {
-        val initials = StringBuilder();
-        initials.append(firstName?.get(0)?.toUpperCase())
-        initials.append(". ")
-        initials.append(middleName?.get(0)?.toUpperCase())
-        initials.append(".")
-        return initials.toString()
+
+    fun convertPxToDp(context: Context, px: Int): Int {
+        return (px / context.resources.displayMetrics.density).roundToInt()
     }
+
+    fun convertDpToPx(context: Context, dp: Float): Int {
+        return (dp * context.resources.displayMetrics.density).roundToInt()
+    }
+
+    fun convertSpToPx(context: Context, sp: Int): Int {
+        return sp * context.resources.displayMetrics.scaledDensity.roundToInt()
+    }
+
 }
+
+
